@@ -78,6 +78,8 @@ snail = function (array) {
                 case 0:
                     rowMover = 0;
                     columnMover = 1;
+                    // Setting the new corner after the old corner is reached
+                    // If the first initial corner [0,0] move down one block, every other time move down and in one block
                     if (corners[cornerNumber][0] === 0 && corners[cornerNumber][1] === 0 && array[activeRow + 1][activeColumn] !== undefined)
                         corners[cornerNumber] = [activeRow + 1, activeColumn];
                     else if (array[activeRow + 1][activeColumn + 1] !== undefined) corners[cornerNumber] = [activeRow + 1, activeColumn + 1];
@@ -85,16 +87,19 @@ snail = function (array) {
                 case 1:
                     rowMover = 1;
                     columnMover = 0;
+                    // Setting the new corner after the old corner is reached
                     if (array[activeRow + 1][activeColumn - 1] !== undefined) corners[cornerNumber] = [activeRow + 1, activeColumn - 1];
                     break;
                 case 2:
                     rowMover = 0;
                     columnMover = -1;
+                    // Setting the new corner after the old corner is reached
                     if (array[activeRow - 1][activeColumn - 1] !== undefined) corners[cornerNumber] = [activeRow - 1, activeColumn - 1];
                     break;
                 case 3:
                     rowMover = -1;
                     columnMover = 0;
+                    // Setting the new corner after the old corner is reached
                     if (array[activeRow - 1][activeColumn + 1] !== undefined) corners[cornerNumber] = [activeRow - 1, activeColumn + 1];
                     break;
             }
@@ -117,6 +122,7 @@ function getPositionInformation(corners, row, column) {
     });
     return { isCorner: isCorner, cornerNumber: cornerNumber };
 }
+// End Submitted Solution
 
 // console.log('output: ' + snail([[]]));
 // console.log("output: " + snail([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));

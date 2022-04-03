@@ -1,75 +1,60 @@
-// you can write to stdout for debugging purposes, e.g.
-// console.log('this is a debug message');
 
-let zigzagLength = [];
-let counter = 0;
+let zigzagLengths = [];  // Contains the lengths of all zig-zag patterns found in a tree
+let turns = 0; // Counter to count all the turns in a zig-zag pattern
 
-function solution(T) {
-    // write your code in JavaScript (Node.js 8.9.4)
-    // console.log(T);
-    searchTree(T);
-    zigzagLength.sort((a, b) => {
-        return b - a;
-    });
-    return zigzagLength[0];
-    // Variables
-    // zig zag array
+// A zig zag pattern is defined as a pattern in which the left or right side of a tree
+// switches to the opposite direction such as from right-to-left or left-to-right
+// and possibly back to the starting direction, but this does not have to be the case.
+// Each turn is added to a counter and the most amount of turns found before reaching the
+// end of a tree's left or right side refers to the longest zig zag pattern.
+function findLongestZigZagInATree(tree) {
+    // Function to go through a Tree Structure.
+    navigateTree(tree);
 
-    // {x: num, l: null, r: null} is the end.
+    // Put the highest length at the end of the array list using sort function as generic sort does not work
+    // well with numbers
+    zigzagLengths.sort((a, b) => a - b);
 
-    // Zig Zag Counting
-    // first zig has counter at 1
-    // Increment counter with each subsequent turn.
-    // If end found add counter to array.
-    // If turns end add counter to array.
-    // If nodes in current direction are available
-    // continue search.
-
-    // Search Mode
-    // Go left or right direction
-    // While in direction keep going in direction until a 
-    // node in the opposite direction is found
-    // then start the zig zag counting above ^
+    return zigzagLengths.pop(); // return the longest zig-zag length found in a tree.
 
 }
 
-// Search Node
-// Given Object To Look At right and left
-// Given current count value of current zig zag if any
-// Count is incremented if zag found based on direction
-// End is based on left and right being null
-function searchTree(obj, direction = null) {
-    // console.log(`x is currently ${obj.x} and count is ${count}`);
-    // If at end then end
-    if (obj.l === null && obj.r === null) {
-        zigzagLength.push(counter);
-        counter = 0;
+// Searches Each Node in a tree recursively.
+function navigateTree(node, direction = null) {
+    
+    // The end is marked by both the right and left node of the current node (object) being null
+    if (node.l === null && node.r === null) {
+        zigzagLengths.push(turns);
+        turns = 0;
         return;
     }
 
-    // If the direction is null, meaning not provided then it's the start
-    // so go down left and right.
-    if (obj.l != null && direction === null) searchTree(obj.l, 'left');
-    if (obj.r != null && direction === null) searchTree(obj.r, 'right');
+    // If the direction is null, meaning not provided then it's the start of the tree
+    // so go down both the left and the right of the tree. Direction is provided so 
+    // that function can take note of changes in direction
+    if (node.l != null && direction === null) navigateTree(node.l, 'left');
+    if (node.r != null && direction === null) navigateTree(node.r, 'right');
 
-    if (obj.l != null && direction === 'left') searchTree(obj.l, direction);
-    if (obj.r != null && direction === 'right') searchTree(obj.r, direction);
 
-    if (obj.l != null && direction === 'right') {
-        counter++;
-        searchTree(obj.l, 'left');
+    // If a node is found in the current navigation direction continue until there are no more nodes 
+    // in the current direction which would mark the beginning of a zig zag pattern
+    if (node.l != null && direction === 'left') navigateTree(node.l, direction);
+    if (node.r != null && direction === 'right') navigateTree(node.r, direction);
+
+    // Once direction changes from the previous direction (due to there being no more nodes in the previous direction
+    // hence none of the above statements running instead) a zig zag pattern is being formed 
+    // and the counter for the zig zag pattern's length should be incremented by one for each turn
+    // until the end of the pattern/tree's side.
+    if ((node.l != null && direction === 'right') || (node.r != null && direction === 'left')) {
+        turns++;
+        // if left is not null then clearly go left otherwise go to the right.
+        node.l != null ? navigateTree(node.l, 'left') : navigateTree(node.r, 'right');
     }
-    if (obj.r != null && direction === 'left') {
-        counter++;
-        searchTree(obj.r, 'right');
-    }
-
-    return;
 }
 
 
 
-let tree = {
+let myTree = {
     x: 5,
     l: {
         x: 3,
@@ -110,4 +95,5 @@ let tree = {
         }
     }
 };
-console.log(solution(tree));
+
+console.log(findLongestZigZagInATree(myTree));

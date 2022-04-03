@@ -1,3 +1,6 @@
+// Array that stores the answer for sum(n) in answers[n] so that when the function recursively trys to find
+// the answer it is not always running a calculation but rather just fetches the answer from the array, saving
+// time and resources
 let answers = [1, 1];
 
 function sum(n) {
@@ -25,3 +28,4 @@ console.log(sum(29));
 console.log(sum(30));
 console.log(sum(40));
 console.log(sum(60));
+console.log(sum(100));

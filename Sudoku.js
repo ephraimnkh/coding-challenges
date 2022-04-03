@@ -124,8 +124,8 @@ var Sudoku = function (data) {
 
                 isSolutionValid = (validRows === (n * n)) && (validGrids === grids) ? true : false;
             }
-
-            if (grids === 1) isSolutionValid = data[0][0] === 1 ? true : false;
+            
+            // if (grids === 1) isSolutionValid = data[0][0] === 1 ? true : false;
 
             return isSolutionValid;
         }

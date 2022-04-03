@@ -17,8 +17,8 @@ function permutations(string, iteration = 0) {
             // To have more varients reverse the current string and add it then reverse again to add the normal string, second reverse is there because
             // reverse is destructive so we must return the array back to the original design so this loop can work well.
             variations.push(stringArray.reverse().join(''), stringArray.reverse().join(''));
-            // once the string is back in its orignal position then the shifting is done.
-            // point to the next letter
+            // once the string is back in its orignal position after the shifting then the shifting is done.
+            // point to the next letter in the original string
             if (index === pointer) {
                 done = true;
                 pointer++;

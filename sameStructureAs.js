@@ -103,6 +103,7 @@ Array.prototype.sameStructureAs = function (other) {
     return length === count && sameLength && sameArrayIndiceLength && arrayIndiceLength === arrayIndiceCount;
 };
 
+// Returns length of array together with lengths of arrays in the array
 const getArrayLength = array => {
     let length = [array.length];
     array.forEach(item => {

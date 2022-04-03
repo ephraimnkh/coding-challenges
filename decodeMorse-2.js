@@ -5,6 +5,7 @@ var decodeBits = function (bits) {
     bits = replaceSpecialOnes(bits);
     bits = bits === originalBits ? bits : replaceSpecialZeros(bits);
     bits = abortBasedOnZero(bits) ? originalBits : bits;
+    // Create Morse Code by fixing number lengths and then replacing numbers with morse code
     return bits.replace(/1{6,}/g, '111').replace(/1{3}/g, '-').replace(/1{2,}/g, '1').replace(/1{1}/g, '.').replace(/0{14,}/g, '0000000').replace(/0{7}/g, '   ').replace(/0{6,}/g, '000').replace(/0{3}/g, ' ').replace(/0{2,}/g, '0').replace(/0{1}/g, '');
 }
 
@@ -26,8 +27,8 @@ var replaceSpecialOnes = function (bits) {
             uniqueSeriesOfOnes.push(value);
     });
 
-    // if only 2 types of unique numbers then likely it's a pattern for - and . with the bigger number being for a -
-    // and the smaller number being for a .
+    // if only 2 unique series of 1s were found then likely it's a pattern representing '-' and '.' with the bigger number being for a '-'
+    // and the smaller number being for a '.'
     if (uniqueSeriesOfOnes.length % 2 === 0) {
         let bigger1 = uniqueSeriesOfOnes[0] > uniqueSeriesOfOnes[1] ? uniqueSeriesOfOnes[0] : uniqueSeriesOfOnes[1];
         uniqueSeriesOfOnes.forEach(value => {
@@ -36,7 +37,7 @@ var replaceSpecialOnes = function (bits) {
             else bits = bits.replace(expression, '.');
         });
     } else {
-        // transform all the weird types of 1s into a . as this is the default if it is difficult to decipher if a 1 is a 
+        // transform all the weird types of 1s into a . as this is the default if it is difficult to decipher if a series of 1s is a 
         // multi bit 1 or a regular 1
         uniqueSeriesOfOnes.forEach(value => {
             let expression = new RegExp(`${value}`, 'g');
@@ -64,15 +65,15 @@ var replaceSpecialZeros = function (bits) {
             uniqueSeriesOfZeros.push(value);
     });
 
-
+    // Sorted and reversed, so that a triple space is not mistaken for 3 single spaces when being replaced below
     uniqueSeriesOfZeros = uniqueSeriesOfZeros.sort().reverse();
 
     // if only 3 types of unique numbers then likely it's a pattern for no space, \s  and \s\s\s, with the biggest number being 
     // for a \s\s\s
     // the next smaller number being for a \s and the smallest number being for no space, so we'll order the numbers
     // from smallest to largest and apply the appropriate spacing.
-    // so when sorted the first number (index === 0) will be for no spacing, the second number (index === 1) will be for 1 space
-    // and the last or third number (index === 2) will be for triple spacing.
+    // so when sorted and reversed the first number (index === 0) will be for triple spacing, the second number (index === 1) will be for 1 space
+    // and the last or third number (index === 2) will be for no spacing.
     if (uniqueSeriesOfZeros.length % 3 === 0) {
         uniqueSeriesOfZeros.forEach((value, index) => {
             let expression = new RegExp(`${value}`, 'g');
@@ -89,6 +90,7 @@ var replaceSpecialZeros = function (bits) {
         });
     }
 
+    // abort if there is a regular 0 still left as it means single zeros are in use instead of 0s with multiple bits.
     return bits.indexOf('0') >= 0 ? originalBits : bits;
 }
 

@@ -11,7 +11,9 @@ function determinant(m) {
       let newM = copy2DArray(m);
       newM = insertBlanksInArray(newM, i);
       let minor = getMinorArray(newM);
+      // Multiply all values in the first row with determinant of minor
       let part = m[0][i] * determinant(minor);
+      // Every 2nd part needs to be negative hence the modifier to make it so
       let modifier = ((i + 1) % 2 == 0) ? -1 : 1;
       answer += (part * modifier);
     }
@@ -31,11 +33,15 @@ function copy2DArray(array){
   return newArray;
 }
 
+/**
+ * @param {number[][]} array - 2D Number Grid
+ * @param {number} column - Column index where all numbers should be replaced with null.
+ */
 function insertBlanksInArray(array, column){
-  array.forEach((numberArray, index) => {
-    numberArray.forEach((number, numberIndex) => {
-      if (index === 0 || numberIndex === column)
-        array[index][numberIndex] = null;
+  array.forEach((numberArray, rowIndex) => {
+    numberArray.forEach((number, columnIndex) => {
+      if (rowIndex === 0 || columnIndex === column)
+        array[rowIndex][columnIndex] = null;
     });
   });
   return array;
@@ -45,9 +51,9 @@ function getMinorArray(array){
     let newArray = [];
     array.forEach(numberArray => {
         let tempArray = [];
-        numberArray.forEach(value => {
-          if (value !== null) 
-            tempArray.push(value);
+        numberArray.forEach(number => {
+          if (number !== null) 
+            tempArray.push(number);
         });
         if (tempArray.length > 0)
           newArray.push(tempArray);

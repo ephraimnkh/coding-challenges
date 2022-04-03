@@ -9,7 +9,7 @@ function rgb(r, g, b) {
     r = r.toString(16).length === 1 ? r.toString(16).padStart(2, '0') : r.toString(16);
     g = g.toString(16).length === 1 ? g.toString(16).padStart(2, '0') : g.toString(16);
     b = b.toString(16).length === 1 ? b.toString(16).padStart(2, '0') : b.toString(16);
-    return `${(r + g + b).toUpperCase()}`;
+    return (r + g + b).toUpperCase();
 }
 
 console.log(rgb(292, 81, 4));
