@@ -1,4 +1,10 @@
-
+/**
+ * 
+ * @param {number} N - Determines the size of the grid as grid will be N x N large.
+ * @param {number[]} A - Array specifying which row/column indices should have all values incremented by 1.
+ * @param {string} S - Specifies whether the index value at A[index] which corresponds to S[index] is referring to a 'R' row index or 'C' a column index.
+ * @returns {number} - The maximum value found in the grid after all grid actions have occurred.
+ */
 
 function solution(N, A, S) {
     // Build Grid
@@ -12,11 +18,13 @@ function solution(N, A, S) {
     }
 
     A.forEach((RCIndex, index) => {
+        // Increase all values in the row by 1
         if (S[index] === 'R'){
             for (let column = 0; column < N; column++){
                 grid[RCIndex][column] += 1;
             }
         }
+        // Increase all values in the column by 1
         if (S[index] === 'C'){
             for (let row = 0; row < N; row++){
                 grid[row][RCIndex] += 1;

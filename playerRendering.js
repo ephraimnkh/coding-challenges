@@ -3,7 +3,7 @@
  * @param {number[]} D - array containing distance of environment objects for game, distance from the player
  * @param {number[]} C - array containing the compute power needed to render each environmental object in the game
  * @param {number} P - The total amount of processing power that the computer has, where the total objects rendered must be less than the computer processing power.
- * @returns {number} objectsToBeRendered - the total number of objects that can be rendered.
+ * @returns {number} - The total number of objects that can be rendered.
  */
 
 // Video Game Environment Object rendering engine is this solution
