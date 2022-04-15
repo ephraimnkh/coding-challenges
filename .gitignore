@@ -1,2 +1,5 @@
 # Folders
 .DS_Store
+
+# Files
+*.class
